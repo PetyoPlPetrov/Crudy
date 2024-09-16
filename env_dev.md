@@ -1,0 +1,4 @@
+NODE_ENV=development
+DB_PORT=5432
+DB_USER=@@@@
+DB_PASSWORD=@@@@
