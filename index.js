@@ -6,43 +6,32 @@ const pool = new Pool({
     database: 'myadmin',
     password: process.env.DB_PASSWORD,
     port: 5432,
-})
-const express = require('express'),
-    app = express();
-const dotenv = require('dotenv').config()
+});
+
+const express = require('express');
+const app = express();
 const cookieParser = require('cookie-parser')
 
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json());
 app.use(cookieParser())
-const userRoutes = require('./src/routes/user');
+
+
+const authRoutes = require('./src/routes/auth');
 const db = require('./src/models')
+const { getUsers } = require('./src/routes/user')
 
 
-app.use('/api/users', userRoutes);
+app.use('/api/users', authRoutes);
 
+//TODO implement depends_on in docker compose
 setTimeout(() => {
     db.sequelize.sync({ force: true }).then(() => {
         console.log("db has been re sync")
     });
 }, 15000)
 
-const getUsers = (request, response) => {
-
-    pool.query('SELECT * FROM users;', (error, results) => {
-        console.log({ results })
-        if (error) {
-            response.status(200).json(error);
-            return
-
-        }
-        response.status(200).json(results.rows)
-    })
-}
-app.get('/',
-    (req, res) => res.send('Dockerizing Node Application!'));
-
-app.get('/users', getUsers);
+app.get('/users', getUsers(pool));
 
 app.listen(3002,
     () => console.log(`[bootup]: Server is running at port: 3002`));

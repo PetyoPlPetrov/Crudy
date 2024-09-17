@@ -1,17 +1,14 @@
 
-//importing modules
-const express = require('express')
-const userController = require('../controllers/user')
-const { signup, login } = userController
-const userAuth = require('../middlewares/auth')
 
-const router = express.Router()
+export const getUsers = pool => (request, response) => {
 
-//signup endpoint
-//passing the middleware function to the signup
-router.post('/signup', userAuth.saveUser, signup)
+    pool.query('SELECT * FROM users;', (error, results) => {
+        console.log({ results })
+        if (error) {
+            response.status(200).json(error);
+            return
 
-//login route
-router.post('/login', login)
-
-module.exports = router
+        }
+        response.status(200).json(results.rows)
+    })
+}
