@@ -15,11 +15,10 @@ Run "Docker compose up" in project root
 * **Docker:** Containerization platform for packaging and deploying the application.
 * **Nginx:** Web server and reverse proxy for load balancing.
 * **PostgreSQL:** Relational database for storing application data.
-* **PostgreSQL:** Relational database for storing application data.
+* **`depends_on` directive:** Ensures containers start in the correct order. WIP
+
 * **Logging** Datadog
 * **Analitics** Segment
-
-* **`depends_on` directive:** Ensures containers start in the correct order.
 * **Kong Gateway:** API gateway for managing and securing APIs.
 * **OAuth 2:** Authorization framework for providing secure access to resources.
 * **Redis:** In-memory data structure store for caching and session management.
