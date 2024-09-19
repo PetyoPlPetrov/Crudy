@@ -25,13 +25,15 @@ const { getUsers } = require('./src/routes/user')
 app.use('/api/users', authRoutes);
 
 //TODO implement depends_on in docker compose
-setTimeout(() => {
-    db.sequelize.sync({ force: true }).then(() => {
-        console.log("db has been re sync")
-    });
-}, 15000)
+db.sequelize.sync({ force: true }).then(() => {
+    console.log("db has been re sync")
+});
+
 
 app.get('/users', getUsers(pool));
+app.get('/ok', (req, response) => {
+    response.status(200).json('`okkk');
+})
 
 app.listen(3002,
     () => console.log(`[bootup]: Server is running at port: 3002`));
